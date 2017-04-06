@@ -12,7 +12,7 @@ Protect your application's sensitive data with Absio's Secured Containers.
 * [API](#api)
 
 ## Overview
-We use AES256 [encryption](#encryption) with unique keys for each Absio Secured Container to protect your application's data.  For offline access and efficiency the Absio Secured Containers are stored in Absio's [Obfuscated File System](#obfuscated-file-system).
+We use AES256 [encryption](#encryption) with unique keys for each Absio Secured Container to protect your application's data.
 
 ### Asynchronous
 * All Absio Secured Container functions return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
@@ -80,7 +80,7 @@ If your project does not use a module bundling tool like [Browserify](http://bro
 
 ### Quick Start
 
-The `userId`, `password`, and `passphrase` used below are the credentials for two existing users.  To simplify the example the users are called Alice and Bob. [Users](#users) can be created with the [`register()`](#registerpassword-reminder-passphrase---userid) method or with our web-based secure user creation utility. For more details see the [Users](#users) section above.
+The `userId`, `password`, and `passphrase` used below are the credentials for two existing users.  To simplify the example the users are called Alice and Bob. [Users](#users) can be created with the [`register()`](#registerpassword-reminder-passphrase---userid) method. For more details see the [Users](#users) section above.
 
 1. Installation:
 
@@ -246,7 +246,7 @@ See the LICENSE file of the module.
   * [getLatestEvents([options])](#getlatesteventsoptions-----container-event--)
   * [update(id[, options])](#updateid-options)
 * [General](#general)
-  * [hash(seed) ](#hashseed---hashedstring)
+  * [hash(stringToHash) ](#hashstringtohash---hashedstring)
   * [initialize(serverUrl, apiKey[, options])](#initializeserverurl-apikey-options)
 * [User Accounts](#user-accounts)
   * [changeBackupCredentials(currentPassphrase, currentPassword, newReminder, newPassphrase)](#changebackupcredentialscurrentpassphrase-currentpassword-newreminder-newpassphrase)
@@ -331,12 +331,12 @@ Parameter   | Type  | Description
 
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
-`access` | Array of user IDs (String) or [Access Information](#access-information-object) for setting permissions and expiration | `[]` | Access will be granted to the users in this Array with any specified permissions or expiration.
+`access` | Array of user IDs (String) or [Access Information](#access-information-object) for setting permissions and expiration | `{}` | Access will be granted to the users in this Array with any specified permissions or expiration.
 `header` | Object | `{}` | This will be serialized with `JSON.Stringify()`, independently encrypted, and can be retrieved prior to downloading and decrypting the full content. Use this to store any data related to the content.
 `type` | String | `null` | A string used to categorize the container on the server.
 
 ### Access Information Object
-```javascript
+``` javascript
 {
     'userIdGrantedAccess': { // If an array of user IDs is specified, then these are the default permissions.
         expiration: null, // This will never expire, define a Date for this access to expire.
@@ -361,7 +361,7 @@ Option | Type  | Default | Description
 
 ### `deleteContainer(id)`
 
-Deletes the container from the server and revokes access for all users, unless specified in options. Any data relating to this container will be deleted from the local Obfuscated File System.
+Deletes the container from the server and revokes access for all users, unless specified in options.
 
 Returns a Promise.
 
@@ -375,7 +375,7 @@ Parameter   | Type  | Description
 
 ### `get(id[, options])` -> [container](#container-object)
 
-Gets the Absio Secured Container and decrypts it for usage. By default it downloads the latest version of container, includes the content, and caches downloaded data locally.  Only encrypted data is cached locally and stored in an Obfuscated File System.  See the options for overriding this behavior.
+Gets the Absio Secured Container and decrypts it for usage. By default it downloads the latest version of the container and includes the content.  See the options for overriding this behavior.
 
 Returns a Promise that resolves to a [container](#container-object)
 
@@ -388,7 +388,6 @@ Parameter   | Type  | Description
 
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
-`cacheLocal` | boolean | `true` | By default we cache information in a local database and Obfuscated File System.  This allows for offline access and greater efficiency.  Set to `false` to prevent this behavior.
 `includeContent` | boolean | `true` | Set to `false` to prevent downloading and decrypting content.  This is helpful when the content is very large.
 
 ---
@@ -429,17 +428,17 @@ Parameter   | Type  | Description
 
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
-`access` | Array of user IDs (String) or [accessInformation](#access-information-object) for setting permissions and expiration | `null` | The access granted to the container on upload. If not specified the currently defined access will be left unchanged.
-`content` | [Buffer](https://nodejs.org/dist/latest-v6.x/docs/api/buffer.html) | null | The content to update.
-`header` | Object | `null` | This will be serialized with `JSON.stringify()`, independently encrypted, and can be retrieved prior to downloading and decrypting the full content. Use this to store any data related to the content.
-`type` | String | `null` | A string used to categorize the container on the server.
+`access` | Array of user IDs (String) or [accessInformation](#access-information-object) for setting permissions and expiration | `undefined` | The access granted to the container on upload. If not specified the currently defined access will be left unchanged.
+`content` | [Buffer](https://nodejs.org/dist/latest-v6.x/docs/api/buffer.html) | `undefined` | The content to update.
+`header` | Object | `undefined` | This will be serialized with `JSON.stringify()`, independently encrypted, and can be retrieved prior to downloading and decrypting the full content. Use this to store any data related to the content.
+`type` | String | `undefined` | A string used to categorize the container on the server.
 
 ---
 
 ## General
 
 ### `hash(stringToHash)` -> `'hashedString'`
-Produces a sha256 hash of the specified seed.
+Produces a sha256 hash of the specified String.
 
 Returns a string with the hashed value.
 
@@ -464,8 +463,7 @@ Parameter   | Type  | Description
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
 `applicationName` | String | `''` | The API server uses the application name to identify different applications.
-`obfuscatedFileSystemSeed` | String | `apiKey` | By default the specified `apiKey` and user information are used as the seed to the Obfuscated File System.  If you would like greater granularity and separation of data, then provide a unique static string for the seed value.
-`rootDirectory` | String | `'./'` | By default the root directory of the Obfuscated File System will be the current directory.  The database and encrypted data is stored inside the Obfuscated File System.
+`rootDirectory` | String | `'./'` | By default the root directory for storing data will be the current directory.  Only encrypted data is stored here.
 
 ---
 
@@ -538,13 +536,13 @@ Throws an Error if the `password` or `passphrase` are incorrect, the `userId` is
 
 Parameter   | Type  | Description
 :-----------|:------|:-----------
-`userId` | String | The userId value is returned at registration.  Call `register()` or use our [user creation interface](TODO place url here).
+`userId` | String | The userId value is returned at registration.  Call `register()` to register a user.
 `password` | String | The password used to decrypt the key file.
 `passphrase` | String | The `passphrase` is used retrieve the key file from the server.
 
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
-`cacheFileLocal` | boolean | `true` | By default we cache the encrypted key file in the local Obfuscated File System for offline access and greater efficiency.  Set to `false` to prevent this from being cached.
+`cacheLocal` | boolean | `true` | By default we cache the encrypted key file in the local file system for offline access and greater efficiency.  Set to `false` to prevent this from being cached.
 
 ---
 
@@ -560,7 +558,7 @@ Returns a Promise.
 
 **Important:** The `password` and `passphrase` should be kept secret.  We recommend using long and complex values with numbers and/or symbols.  Do not store them publicly in plain text.
 
-Generates private keys and registers a new user on the API server.  This user's private keys are encrypted with the `password` to produce a key file.  The `passphrase` is used to reset the password and download the key file. Our web-based user creation utility can also be used to securely generate static users.
+Generates private keys and registers a new user on the API server.  This user's private keys are encrypted with the `password` to produce a key file.  The `passphrase` is used to reset the password and download the key file.
 
 Returns a Promise that resolves to the new user's ID.
 
@@ -575,7 +573,7 @@ Parameter   | Type  | Description
 ---
 
 ### `resetPassword(userId, passphrase, newPassword)`
-If user's password is forgotten, then use this to reset a user's password. Call `getBackupReminder(userId)` to get the reminder for the `passphrase`.
+If a user's password is forgotten, then use this method to reset a user's password. Call `getBackupReminder(userId)` to get the reminder for the `passphrase`.
 
 Returns a Promise.
 
