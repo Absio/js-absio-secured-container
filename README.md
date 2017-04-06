@@ -2,6 +2,8 @@
 
 Protect your application's sensitive data with Absio's Secured Containers.
 
+This module is currently in **Beta** testing.  Please [contact us](#obtaining-an-api-key) if you would like to join this **Beta** testing.
+
 ## Index
 
 * [Overview](#overview)
