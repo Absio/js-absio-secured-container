@@ -15,34 +15,27 @@ Protect your application's sensitive data with Absio's Secured Containers.
 We use AES256 [encryption](#encryption) with unique keys for each Absio Secured Container to protect your application's data.  For offline access and efficiency the Absio Secured Containers are stored in Absio's [Obfuscated File System](#obfuscated-file-system).
 
 ### Asynchronous
-* All Absio Secured Container functions return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) and execute asynchronously, except for [`initialize()`](#initializeserverurl-apikey-options).
-  * Use the existing [`.then()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) and [`.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) methods to handle the promises.
+* All Absio Secured Container functions return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+  * The standard [`.then()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then) and [`.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) methods can be used to handle the promises.
   * Execute multiple asynchronous Absio Secured Container methods in parallel using [`Promise.all()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all) or [`Promise.race()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race).
-* If this prevents you from using Absio Secured Containers in your application, then please contact us.
 * Optionally use the async-await syntax enabled by [Babel](https://babeljs.io/) as shown in the [Usage](#usage) section.
-* For greater browser support we suggest using the [ES6 Promise](https://github.com/stefanpenner/es6-promise) polyfill.
+* If this prevents you from using Absio Secured Containers in your application, then please [contact us](#support-and-bug-reporting).
 
 ### Users
 * A user is an entity that has its own set of private keys.  
-* Create users with the [`register()`](#registerpassword-question-passphrase---userid) function that returns a User ID.
+* Create users with the [`register()`](#registerpassword-reminder-passphrase---userid) function that returns a User ID.
 * A User ID is the value used represent the user entity.
 * A user's public keys are registered with an Absio API Server.
   * Public keys are publicly available to other users for granting access to containers.
   * Public keys are used by the server to validate user actions.
 * Each user can [create](#createcontent-options---containerid) Absio Secured Containers that are uniquely [encrypted](#encryption).
-* Optionally a user can grant other users [access](#accessinformation) to an Absio Secured Container and add unique permissions or lifespan controls.
+* Optionally a user can grant other users [access](#container-object) to an Absio Secured Container and add unique permissions or lifespan controls.
 
 ### Key File
 * A [user's](#users) Key File is an AES256 [encrypted](#encryption) file containing private keys and password reset.
-* A [user's](#users) password is used to encrypt their private keys.  This mechanism allows Absio Secured Containers to be accessible offline.
+* A [user's](#users) password is used to encrypt their private keys.
 * A Key File contains both signing and derivation private keys.
 * A passphrase can be provided to synchronize a Key File between devices and enable a secure password reset.
-
-### Obfuscated File System
-* All Absio Secured Containers and [Key Files](#key-file) can be securely stored in Absio's Obfuscated File System.  
-* This module automatically obfuscates the names and randomizes the folder structure of the encrypted files.  
-* Increases security by making attacks on the individually [encrypted](#encryption) containers more difficult.
-* The seed for obfuscation combines user, application, and server information to partition the data.
 
 ### Encryption
 * A user's private keys are stored in an encrypted [Key File](#key-file).
@@ -67,7 +60,7 @@ This SDK requires a valid API Key that should be passed into the [initialize()](
 ### Module Import Support
 We use [Rollup](https://github.com/rollup/rollup) to produce unique CommonJS and ES6 bundles for node and browser.  Our goal is to make using our SDK as easy as possible. [Contact us](#support-and-bug-reporting) if you experience any issues or have suggestions to improve this.
 
-The `module` and `jsnext:main` fields of the `package.json` reference the CommonJS and ES6 specific bundles for Node.js.  The `browser` field of the `package.json` map to the corresponding browser bundles.  The browser bundles contain all external dependencies needed for execution, whereas the Node.js version do not.  
+The `module` and `jsnext:main` fields of the `package.json` reference the CommonJS and ES6 specific bundles for Node.js.  The `browser` field of the `package.json` map to the corresponding browser bundles.  The browser bundles contains all external dependencies needed for execution, whereas the Node.js version does not.  
 
 ``` javascript
 // ES6
@@ -87,7 +80,7 @@ If your project does not use a module bundling tool like [Browserify](http://bro
 
 ### Quick Start
 
-The `userId`, `password`, and `passphrase` used below are the credentials for two existing users.  To simplify the example the users are called Alice and Bob. [Users](#users) can be created with the `register()` method or with our web-based secure user creation utility. For more details see the [Users](#users) section above.
+The `userId`, `password`, and `passphrase` used below are the credentials for two existing users.  To simplify the example the users are called Alice and Bob. [Users](#users) can be created with the [`register()`](#registerpassword-reminder-passphrase---userid) method or with our web-based secure user creation utility. For more details see the [Users](#users) section above.
 
 1. Installation:
 
@@ -262,7 +255,7 @@ See the LICENSE file of the module.
   * [getBackupReminder(userId)](#getbackupreminderuserid---reminder-for-the-backup-passphrase)
   * [logIn(userId, password, passphrase[, options])](#loginuserid-password-passphrase-options)
   * [logOut()](#logout)
-  * [register(password, question, passphrase)](#registerpassword-reminder-passphrase---userid)
+  * [register(password, reminder, passphrase)](#registerpassword-reminder-passphrase---userid)
   * [resetPassword(userId, passphrase, newPassword)](#resetpassworduserid-passphrase-newpassword)
 
 ## Container
