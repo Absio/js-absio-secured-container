@@ -2,7 +2,7 @@
 
 Protect your application's sensitive data with Absio's Secured Containers.
 
-This module is currently in **Beta** testing.  Please [contact us](#obtaining-an-api-key) if you would like to join this **Beta** testing.
+This module is currently in **Beta**.  Please [contact us](#obtaining-an-api-key) if you would like to join this **Beta** program.
 
 ## Index
 
@@ -34,7 +34,7 @@ We use AES256 [encryption](#encryption) with unique keys for each Absio Secured 
 * Optionally a user can grant other users [access](#container-object) to an Absio Secured Container and add unique permissions or lifespan controls.
 
 ### Key File
-* A [user's](#users) Key File is an AES256 [encrypted](#encryption) file containing private keys and password reset.
+* A [user's](#users) Key File is an AES256 [encrypted](#encryption) file containing private keys and password reset information.
 * A [user's](#users) password is used to encrypt their private keys.
 * A Key File contains both signing and derivation private keys.
 * A passphrase can be provided to synchronize a Key File between devices and enable a secure password reset.
@@ -57,7 +57,7 @@ We use AES256 [encryption](#encryption) with unique keys for each Absio Secured 
 After obtaining an API Key, use the [Quick Start](#quick-start) to quickly get started.
 
 ### Obtaining an API Key
-This SDK requires a valid API Key that should be passed into the [initialize()](#initializeserverurl-apikey-options) method. Obtain an API Key by [contacting us here](https://www.absio.com/contact) or sending an email to [sales@absio.com](mailto:sales@absio.com).
+This SDK requires a valid API Key that must be passed into the [initialize()](#initializeserverurl-apikey-options) method. Obtain an API Key by [contacting us here](https://www.absio.com/contact) or sending an email to [sales@absio.com](mailto:sales@absio.com). An API key should be considered private and protected as such.
 
 ### Module Import Support
 We use [Rollup](https://github.com/rollup/rollup) to produce unique CommonJS and ES6 bundles for node and browser.  Our goal is to make using our SDK as easy as possible. [Contact us](#support-and-bug-reporting) if you experience any issues or have suggestions to improve this.
@@ -240,6 +240,7 @@ See the LICENSE file of the module.
 
 ## API
 * [Container](#container)
+  * [Access Information Object](#access-information-object)
   * [Container Object](#container-object)
   * [Container Event Object](#container-event-object)
   * [create(content[, options])](#createcontent-options---containerid)
@@ -261,6 +262,44 @@ See the LICENSE file of the module.
   * [resetPassword(userId, passphrase, newPassword)](#resetpassworduserid-passphrase-newpassword)
 
 ## Container
+
+### Access Information Object
+
+The Access Information Object is used by the [create()](#createcontent-options---containerid) and [update()](#updateid-options) to define a user's access to a container.  The key is the user's ID, and the value contains the user's permissions for this container and an optional expiration for this access.  See the table below for more information on the specific permissions.
+
+The [create()](#createcontent-options---containerid) and [update()](#updateid-options) methods allow access to be defined as a list of user IDs.  When this is used, the permissions defined in the code block below will be the defaults for the user with ID in specified array.  The [get()](#getid-options---container) and [getLatestEvents()](#getlatesteventsoptions-----container-event--) (in changes field) methods always describe access as the object shown below.
+
+Unless a permission is explicitly defined, the user creating or updating the container will be given full permissions to the container without an expiration.
+
+``` javascript
+{
+    'userIdGrantedAccess': {
+        expiration: null, // This will never expire, define a Date for this access to expire.
+        permissions: {
+            access: {
+                view: true,
+                modify: false,
+            },
+            container: {
+                decrypt: true,
+                download: true,
+                modifyType: false,
+                upload: false
+            }
+        }
+    }
+}
+```
+
+Permission | Owner's Default | Other User's Default | Description
+:----------|:----------------|:---------------------|:-----------
+`access.view` | `true` | `true` | Permission to view the full access list containing all other user's IDs, expiration dates, and permissions.  Set to `false` to prevent a user from seeing other user's access information for the container.
+`access.modify` | `true` | `false` | Permission for adding, removing, or updating all users' access to a container.  Set to `true` to allow a user to modify access to the container.
+`container.decrypt` | `true` | `true` | Permission to access the key blob required for this user to decrypt the container.  Set to `false` to prevent a user from being able to decrypt the container's content and header.
+`container.download` | `true` | `true` | Permission to allow a user to download the encrypted container's data.  Set to `false` to prevent a user from accessing the encrypted container data.
+`container.modifyType` | `true` | `false` | Permission to modify the container's `type` field.  Set to `true` to allow a user to make changes to a container's `type` field.
+`container.upload` | `true` | `false` | Permission to upload changes to the container's content and header.  Set to `true` to allow a user to upload changes to the content and header of a container.
+
 
 ### Container Object
 ``` javascript
@@ -337,27 +376,6 @@ Option | Type  | Default | Description
 `header` | Object | `{}` | This will be serialized with `JSON.Stringify()`, independently encrypted, and can be retrieved prior to downloading and decrypting the full content. Use this to store any data related to the content.
 `type` | String | `null` | A string used to categorize the container on the server.
 
-### Access Information Object
-``` javascript
-{
-    'userIdGrantedAccess': { // If an array of user IDs is specified, then these are the default permissions.
-        expiration: null, // This will never expire, define a Date for this access to expire.
-        permissions: {
-            access: {
-                view: true,
-                modify: false,
-            },
-            container: {
-                decrypt: true,
-                download: true,
-                modifyType: false,
-                upload: false
-            }
-        }
-    }
-}
-
-```
 
 ---
 
@@ -534,7 +552,7 @@ Decrypts the key file containing the user's private keys with the provided passw
 
 Returns a Promise.
 
-Throws an Error if the `password` or `passphrase` are incorrect, the `userId` is not found, or a connection is unavailable. In the last case the server authentication will be attempted again automatically when any method is called requiring a connection.
+Throws an Error if the `password` or `passphrase` are incorrect, the `userId` is not found, or a connection is unavailable. If the password is correct and a connection is unavailable, then calling `logIn()` again is not required.  Authentication with the server will be attempted again automatically on the next call that requires it.
 
 Parameter   | Type  | Description
 :-----------|:------|:-----------
@@ -544,7 +562,7 @@ Parameter   | Type  | Description
 
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
-`cacheLocal` | boolean | `true` | By default we cache the encrypted key file in the local file system for offline access and greater efficiency.  Set to `false` to prevent this from being cached.
+`cacheLocal` | boolean | `false` | By default we do not cache the encrypted Key File locally.  Set to `true` to enable using the cache for offline access and greater efficiency.  When set to true, the encrypted Key File will stored and accessed using the local file system in Node.js and using HTML 5 Local Storage in the browser.
 
 ---
 
