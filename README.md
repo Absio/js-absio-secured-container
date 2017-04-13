@@ -306,7 +306,7 @@ Permission | Owner's Default | Other User's Default | Description
 {
     access: {
         userIdWithAccess: {
-            expiration: <null or Date()>,
+            expiration: 'ISO formatted date string',
             keyBlob: 'Base64EncodedStringOfEncryptedKeyBlob'
             permissions: {
                 access: {
@@ -343,13 +343,15 @@ Permission | Owner's Default | Other User's Default | Description
 {
   action: "Always one of 'accessed', 'added', 'deleted', or 'updated'.",
   changes : "Information about what has changed. For example: { fieldThatChanged: 'updatedValue' }",
-  appName: "The name of the application responsible for the action, optionally specified in the initialize() method.",
+  clientAppName: "The name of the application responsible for the action, optionally specified in the initialize() method.",
+  containerExpiredAt: "ISO formatted date that will be set to the date of container expiration if the container has expired.", 
+  containerId: "The ID for container that this event relates to, if type is 'container'.", 
+  containerModifiedAt: "ISO formatted date string corresponding to when the the container was last modified, if type is 'container'.", 
+  containerType: "The type of the container as specified upon creation or last update.", 
   date: "ISO formatted date string corresponding to when the event occurred.",
-  eventId: "An integer ID value for the event.",
-  containerId: "The ID for container that this event relates to.",
-  lastModified: "ISO formatted date string corresponding to when the the container was last modified.",
-  containerType: "The type of the container as specified upon creation or last update.",
-  relatedUserId: "If this event relates to another user, this field will be set to that user's GUID.  Currently only applies to 'accessed' actions.",
+  eventId: "An integer ID value for the event",
+  relatedUserId: "If this event relates to another user, this field will be set to that user's GUID.",
+  type: "The event type, always one of 'container', or 'keysFile'"
 }
 ```
 
@@ -483,6 +485,9 @@ Parameter   | Type  | Description
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
 `applicationName` | String | `''` | The API server uses the application name to identify different applications.
+`passphraseValidator` | Function | Function that enforces a passphrase must be at least 8 characters, and include at least 1 uppercase letter, 1 lowercase letter, and 1 number. | A Function that takes a String passphrase parameter and returns a Boolean value indicating whether the passphrase is valid.
+`passwordValidator` | Function | Function that enforces a password must be at least 8 characters, and include at least 1 uppercase letter, 1 lowercase letter, and 1 number. | A Function that takes a String password parameter and returns a Boolean value indicating whether the password is valid.
+`reminderValidator` | Function | `(reminder) => true`, returns true for any reminder. | A Function that takes a String reminder parameter and returns a Boolean value indicating whether the reminder is valid.
 `rootDirectory` | String | `'./'` | By default the root directory for storing data will be the current directory.  Only encrypted data is stored here.
 
 ---
@@ -576,7 +581,7 @@ Returns a Promise.
 
 ### `register(password, reminder, passphrase)` -> `'userId'`
 
-**Important:** The `password` and `passphrase` should be kept secret.  We recommend using long and complex values with numbers and/or symbols.  Do not store them publicly in plain text.
+**Important:** The `password` and `passphrase` should be kept secret.  Do not store them publicly in plain text.  By default, we only validate that the password and passphrase must be at least 8 characters, and include at least 1 uppercase letter, 1 lowercase letter, and 1 number.  To override this behavior or to add reminder validation, see the optional validator parameters of the [initialize()](#initializeserverurl-apikey-options) method.
 
 Generates private keys and registers a new user on the API server.  This user's private keys are encrypted with the `password` to produce a key file.  The `passphrase` is used to reset the password and download the key file.
 

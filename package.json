@@ -1,0 +1,69 @@
+{
+  "name": "absio-secured-container",
+  "version": "0.1.0",
+  "browser": {
+    "./dist/node/index.es2015.js": "./dist/browser/index.es2015.js",
+    "./dist/node/index.umd.js": "./dist/browser/index.umd.js"
+  },
+  "main": "./dist/node/index.umd.js",
+  "module": "./dist/node/index.es2015.js",
+  "jsnext:main": "./dist/node/index.es2015.js",
+  "scripts": {
+    "browser-test-server": "ws --spa index.html -d browserTest/",
+    "build-browser-test": "gulp build-browser-test",
+    "build-node": "gulp build-node",
+    "build": "gulp build",
+    "coverage": "babel-node ./node_modules/isparta/bin/isparta cover _mocha -- ./test/**.js",
+    "create-guid": "babel-node -e 'console.log(require(\"absio-base-sdk\").guid.create())'",
+    "test": "mocha --compilers js:babel-register --require babel-polyfill -- ./test/**.js"
+  },
+  "dependencies": {
+    "fetch-ponyfill": "4.0.0",
+    "leveldown": "^1.6.0",
+    "linvodb3": "^3.25.0"
+  },
+  "devDependencies": {
+    "absio-base-sdk": "1.0.0-RC51",
+    "absio-developer-util": "1.0.0-RC3",
+    "absio-gulp-base": "1.0.0-RC8",
+    "babel-cli": "^6.23.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "6.22.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-register": "^6.9.0",
+    "babel-runtime": "^6.23.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chalk": "^1.1.3",
+    "es6-promise": "3.3.1",
+    "fetch-mock": "5.9.4",
+    "get-parameter-names": "^0.3.0",
+    "gulp": "^3.9.1",
+    "isomorphic-fetch": "^2.2.1",
+    "isparta": "^4.0.0",
+    "merge-stream": "^1.0.0",
+    "mocha": "^3.2.0",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.41.6",
+    "rollup-plugin-async": "^1.2.0",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-builtins": "^2.1.0",
+    "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-replace": "^1.1.1"
+  },
+  "homepage": "https://github.com/Absio/absio-secured-container",
+  "files": [
+    "dist/",
+    "README*"
+  ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Absio/absio-secured-container"
+  }
+}
