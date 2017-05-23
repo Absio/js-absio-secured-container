@@ -1,6 +1,6 @@
 {
   "name": "absio-secured-container",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "browser": {
     "./dist/node/index.es2015.js": "./dist/browser/index.es2015.js",
     "./dist/node/index.umd.js": "./dist/browser/index.umd.js"
