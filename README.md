@@ -612,4 +612,4 @@ Parameter   | Type  | Description
 `newPassword` | String | The new password for the user.
 
 ## Examples
-Our [GitHub](https://github.com/Absio/absio-secured-container) page has both [Node](https://github.com/Absio/absio-secured-container/tree/master/Examples/Node) and [Browser](https://github.com/Absio/absio-secured-container/tree/master/Examples/Browser) examples.
+Our [GitHub](https://github.com/Absio/absio-secured-container) page has both [Node](https://github.com/Absio/absio-secured-container/tree/master/examples/node) and [Browser](https://github.com/Absio/absio-secured-container/tree/master/examples/browser) examples.
