@@ -12,6 +12,7 @@ This module is currently in **Beta**.  Please [contact us](#obtaining-an-api-key
 * [Support and Bug Reporting](#support-and-bug-reporting)
 * [License Agreement](#license-agreement)
 * [API](#api)
+* [Examples](#examples)
 
 ## Overview
 We use AES256 [encryption](#encryption) with unique keys for each Absio Secured Container to protect your application's data.
@@ -609,3 +610,6 @@ Parameter   | Type  | Description
 `userId` | String | A string ID representing the user.
 `passphrase` | String | The `passphrase` is set up during registration of the account.  This is used to reset the password.
 `newPassword` | String | The new password for the user.
+
+## Examples
+Our [GitHub](https://github.com/Absio/absio-secured-container) page has both [Node](https://github.com/Absio/absio-secured-container/tree/master/Examples/Node) and [Browser](https://github.com/Absio/absio-secured-container/tree/master/Examples/Browser) examples.
