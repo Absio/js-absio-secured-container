@@ -16,13 +16,13 @@ This module is currently in **Beta**.  Please [contact us](#obtaining-an-api-key
 
 ## Overview
 
-###Absio Technology
+### Absio Technology
 
 Absio offers a set of tools that developers can use to protect application data throughout its lifecycle—from creation to deletion, everywhere it exists—without having to manage keys, add hardware, increase latency or rely on a third-party service for access to data. Absio’s cross-platform, Serverless Encryption technology automatically encrypts any type of unstructured data object (file or stream) generated or processed by an application prior to being stored or transmitted, each with its own unique key. Data content keys are uniquely encrypted for each user given access to the data, allowing user-specific access and permissions to be added or revoked at any time without needing to re-encrypt the data object. All key generation and management is performed automatically on the device running the application and not by a central key server. Encrypted data objects and content keys can be stored locally in an obfuscated file system to reduce network latency impacts and enable local content to be decrypted and encrypted while offline. Absio technology automatically obfuscates file names and types and randomizes the folder structure, enabling keys and content to be stored locally without putting data at risk.
 
 In addition, developers can use Absio tools to associate classification, audit history, policy and other metadata from any source, enabling software applications to consume this information and 1) process and update metadata without providing access to, or decrypting content, and/or 2) restrict who, how, where, and for how long decrypted content can be used. For data sharing, Absio technology provides an automated public key infrastructure, and a portable (installable anywhere), extensible, zero-knowledge server application for authentication, content/key exchange, sync, and backup.
 
-###Absio Technology Components
+### Absio Technology Components
 
 The Absio developer toolset consists of cross platform-capable software development kits (SDKs), each with a simple application programming interface ([API](#api)), and a portable server application ([Absio API Server Application](#absio-api-server-application)). The Absio SDK is currently available in JavaScript (Browser and Node.js) and C#. SDKs for Swift, Java and Python will be available late summer 2017. The Absio Server Application is written in Python and can be deployed by the organization via a Python package, RPM, VM or Docker container. All communication with the Absio Server Application is handled by the SDK methods, so no separate API calls are required. 
 
