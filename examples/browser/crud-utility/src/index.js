@@ -12,7 +12,7 @@ import viewerReducer from './js/reducers';
 import App from './js/App';
 import './css/index.css';
 
-initialize('https://sandbox.absio.com', '89df1450-458e-4d43-bf42-5c700a4648ce')
+initialize('https://sandbox.absio.com', '860ba350-7551-4fd3-b988-f31cd067094f')
     .catch((error) => console.log(error));
 
 const store = createStore(viewerReducer, applyMiddleware(thunk));

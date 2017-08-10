@@ -31,3 +31,7 @@ html, body {
   padding: 10px;
   width:100%;
 }
+
+.Modal-dialog--medium {
+    width: 680px;
+  }
