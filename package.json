@@ -1,6 +1,6 @@
 {
   "name": "absio-secured-container",
-  "version": "0.1.6",
+  "version": "1.1.0",
   "browser": {
     "./dist/node/index.es2015.js": "./dist/browser/index.es2015.js",
     "./dist/node/index.umd.js": "./dist/browser/index.umd.js"
@@ -21,7 +21,8 @@
   "dependencies": {
     "fetch-ponyfill": "4.0.0",
     "leveldown": "^1.6.0",
-    "linvodb3": "^3.25.0"
+    "linvodb3-with-serialization-options": "Absio/linvodb3-with-serialization-options",
+    "rimraf": "^2.6.1"
   },
   "devDependencies": {
     "absio-base-sdk": "1.0.0-RC51",
