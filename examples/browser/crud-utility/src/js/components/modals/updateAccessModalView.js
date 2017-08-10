@@ -26,10 +26,22 @@ const defaultPermissions = {
     container:{
         decrypt: false,
         download: false,
+        viewType: false,
         modifyType: false,
         upload: false
     }
 };
+
+const initialState = {
+    modalIsOpen: false,
+    useExistingUser: false,
+    setExpirationTime: false,
+    userID:'',
+    containerAccess:{},
+    permissionObj : defaultPermissions,
+    expirationDate: null,
+    error:null
+}
 
 class UpdateAccessModal extends React.Component {
 
@@ -47,16 +59,7 @@ class UpdateAccessModal extends React.Component {
         this.getExistingUserIds = this.getExistingUserIds.bind(this);
         this.updatePermissionsForSelectedUser = this.updatePermissionsForSelectedUser.bind(this);
         this.handleDateSelect = this.handleDateSelect.bind(this);
-        this.state = {
-            modalIsOpen: false,
-            useExistingUser: false,
-            setExpirationTime: false,
-            userID:'',
-            containerAccess:{},
-            permissionObj : defaultPermissions,
-            expirationDate: null,
-            error:null
-        };
+        this.state = initialState;
     }
 
     componentWillReceiveProps(nextProps){
@@ -141,7 +144,7 @@ class UpdateAccessModal extends React.Component {
     }
 
     toggleModal(visible){
-        this.setState({ modalIsOpen: visible });
+        this.setState(initialState);
         this.props.closeModal();
     }
 
@@ -165,6 +168,7 @@ class UpdateAccessModal extends React.Component {
 
                     <div className="inline-controls">
                         <Checkbox label="modify type" checked={this.state.permissionObj.container.modifyType} onChange = {e => this.handlePermissionCheckBoxChange(e,'modifyType')} />
+                        <Checkbox label="view type" checked={this.state.permissionObj.container.viewType} onChange = {e => this.handlePermissionCheckBoxChange(e,'viewType')} />
                         <Checkbox label="upload" checked={this.state.permissionObj.container.upload} onChange = {e => this.handlePermissionCheckBoxChange(e,'upload')} />
                     </div>
                 </FormField>
