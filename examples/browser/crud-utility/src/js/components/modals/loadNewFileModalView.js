@@ -33,6 +33,7 @@ class LoadNewFileModal extends React.Component {
                 container:{
                     decrypt: true,
                     download: true,
+                    viewType: true,
                     modifyType: true,
                     upload: true
                 }
@@ -182,6 +183,7 @@ class LoadNewFileModal extends React.Component {
                                 </div>
                                 <div className="inline-controls">
                                     <Checkbox label="modify type" checked={this.state.permissionObj.container.modifyType} onChange = {e => this.handlePermissionCheckBoxChange(e,'modifyType')} />
+                                        <Checkbox label="view type" checked={this.state.permissionObj.container.viewType} onChange = {e => this.handlePermissionCheckBoxChange(e,'viewType')} />
                                     <Checkbox label="upload" checked={this.state.permissionObj.container.upload} onChange = {e => this.handlePermissionCheckBoxChange(e,'upload')} />
                                 </div>
                             </FormField>

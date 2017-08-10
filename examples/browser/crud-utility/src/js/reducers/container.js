@@ -7,7 +7,8 @@ const initialState = {
         modalType: containerActions.UNDEFINED,
         containerId: ''
     },
-    container:{}
+    container: {},
+    UPDATE_CONTAINER_INFO:{}
 };
 
 const container = (state, action) => {

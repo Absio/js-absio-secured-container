@@ -74,6 +74,7 @@ class ContainerModal extends React.Component {
                     <td>{permissions.container.decrypt.toString()}</td>
                     <td>{permissions.container.download.toString()}</td>
                     <td>{permissions.container.modifyType.toString()}</td>
+                    <td>{permissions.container.viewType.toString()}</td>
                     <td>{permissions.container.upload.toString()}</td>
                     <td>{dateToShow}</td>
                 </tr>
@@ -112,6 +113,7 @@ class ContainerModal extends React.Component {
                                 <col width="10%" />
                                 <col width="10%" />
                                 <col width="10%" />
+                                <col width="10%" />
                             </colgroup>
                             <thead>
                             <tr>
@@ -121,6 +123,7 @@ class ContainerModal extends React.Component {
                                 <th>Decrypt</th>
                                 <th>Download</th>
                                 <th>Modify Type</th>
+                                <th>View Type</th>
                                 <th>Upload</th>
                                 <th>Expires</th>
                             </tr>

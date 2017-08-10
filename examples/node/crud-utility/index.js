@@ -15,7 +15,7 @@ const _           = require('lodash');
 const moment      = require('moment');
 const open        = require('open');
 
-securedContainer.initialize('https://sandbox.absio.com', 'c6b769ac-f7e9-43eb-96e2-dd6e07756149')
+securedContainer.initialize('https://sandbox.absio.com', '860ba350-7551-4fd3-b988-f31cd067094f')
     .catch((error) => console.log(chalk.red(error)));
 
 
@@ -26,6 +26,7 @@ const commands = {
   showFileById: 'Show File by ID',
   showFilesInOfs: 'Show Files in OFS',
   processEvents: 'Process Events',
+  showAvailableIds: 'Show available container Ids',
   logout: 'Logout',
   tryAgain: 'Try Again',
   homeScreen: 'Home Screen',
@@ -36,6 +37,7 @@ const commands = {
   showFileScreen: 'Show File Screen',
   grantAccessForNewUser: 'Grant Access For New User',
   updateAccessForExistingUser: 'Update Access For Existing User',
+  switchSourcePrivider: "Switch data source provider"
 }
 
 let availableIds = [];
@@ -43,7 +45,6 @@ let loggedInUserId = '';
 
 const filterEventsId = (events) => {
     // available actions for events 'all', 'accessed', 'added', 'deleted', or 'updated'
-    
     let deletedEvents = events.filter((elem, index, array) => {
         return elem.action === 'deleted';
     });
@@ -59,6 +60,80 @@ const filterEventsId = (events) => {
     return _.difference(_.uniq(allIds), deletedIds);
 }
 
+const switchDataProvider = () => {
+  let options = [commands.homeScreen];
+
+  let providers = Object.keys(securedContainer.providers).map(function(key) {
+      options.push(securedContainer.providers[key]);
+  });
+  inquirer.prompt(
+  {
+    type: 'list',
+    name: 'optionValue',
+    message: 'Please choose an option',
+    choices: options
+  })
+  .then((answers) => {
+      switch(answers.optionValue){
+        case commands.homeScreen:
+          homeMenu();
+        break;
+        default:
+          switchProvider(answers.optionValue);
+          homeMenu();
+      }
+  });
+};
+
+const switchProvider = (providerName) => {
+  securedContainer.setCurrentProvider(providerName);
+  console.log(chalk.yellow('Provider changed to ') + chalk.magenta(providerName));
+}
+
+const eventProcessingSubMenu = () => {
+  inquirer.prompt(
+  {
+    type: 'list',
+    name: 'optionValue',
+    message: 'This containers Ids fetched from server events',
+    choices: [
+      commands.showAvailableIds,
+      commands.homeScreen
+    ]
+  })
+  .then((answers) => {
+      switch(answers.optionValue){
+        case commands.homeScreen:
+          homeMenu();
+        break;
+        case commands.showAvailableIds:
+         showAvailableIdsOnServer();
+        break;
+      }
+  });
+};
+
+const showAvailableIdsOnServer = () => {
+
+  let options = [commands.homeScreen].concat(availableIds);
+  inquirer.prompt(
+  {
+    type: 'list',
+    name: 'optionValue',
+    message: 'Please choose an option',
+    choices: options
+  })
+  .then((answers) => {
+      switch(answers.optionValue){
+        case commands.homeScreen:
+          homeMenu();
+        break;
+        default:
+          showFileInfo(answers.optionValue);
+      }
+  });
+}
+
 const processEvents = () => {
   const status = new Spinner('Processing events ...');
   status.start();
@@ -67,7 +142,7 @@ const processEvents = () => {
   .then((events) => {
       availableIds = filterEventsId(events);
       status.stop();
-      homeMenu();
+      eventProcessingSubMenu();
   })
   .catch((error) => {
     status.stop();
@@ -137,14 +212,20 @@ const loginWithCredentials = () => {
             return 'Please enter passphrase';
           }
         }
-      }
-    ];
+      },
+      {
+        type: 'confirm',
+        name: 'cacheKeyFileLocally',
+        message: 'Do you want to cache key file locally ? This will allow you login in offline mode',
+        default: false
+    }];
+
     inquirer.prompt(loginQuestions)
     .then((answers) => {
         const status = new Spinner('Authentication with server...');
         status.start();
-
-        securedContainer.logIn(answers.userId, answers.password, answers.passphrase)
+        
+        securedContainer.logIn(answers.userId, answers.password, answers.passphrase, {cacheLocal: answers.cacheKeyFileLocally})
         .then(() => {
           loggedInUserId = answers.userId;
           status.stop();
@@ -152,6 +233,7 @@ const loginWithCredentials = () => {
         })
         .catch((error) => {
           status.stop();
+          logError(error.stack);
           logError(error.message);
           topMenu();
       });
@@ -159,24 +241,36 @@ const loginWithCredentials = () => {
 }
 
 const showFilesInOfs = () =>{
-  let options = [commands.homeScreen].concat(availableIds);
-
-  inquirer.prompt(
-  {
-    type: 'list',
-    name: 'optionValue',
-    message: 'Please choose an option',
-    choices: options
+  const status = new Spinner('Loading container ...');
+  status.start();
+  securedContainer.getAllLocalContainersIds()
+  .then((ids) => {
+    status.stop();
+    console.log(ids);
+    let options = [commands.homeScreen].concat(ids);
+    
+    inquirer.prompt(
+    {
+      type: 'list',
+      name: 'optionValue',
+      message: 'Please choose an option',
+      choices: options
+    })
+    .then((answers) => {
+        switch(answers.optionValue){
+          case commands.homeScreen:
+            homeMenu();
+          break;
+          default:
+            showFileInfo(answers.optionValue);
+        }
+    })
   })
-  .then((answers) => {
-      switch(answers.optionValue){
-        case commands.homeScreen:
-          homeMenu();
-        break;
-        default:
-          showFileInfo(answers.optionValue);
-      }
-  });
+  .catch((error) => {
+    status.stop();
+    logError(error.message);
+    homeMenu();
+  })
 }
 
 const deleteContainer = (fileId) => {
@@ -271,7 +365,6 @@ const updateAccessForUser = (container, userId, newPermissions) => {
   }
 
   container.access[userId] = newPermissions[userId];
-
 
   let status = new Spinner('Updating permissions ...')
   status.start();
@@ -661,6 +754,7 @@ const availablePermissions  = {
   container:{
     decrypt: 'decrypt',
     download: 'download',
+    viewType: 'viewType',
     modifyType:'modifyType',
     upload: 'upload'
   }
@@ -686,6 +780,7 @@ const getAccessModifiers = () => {
   permissionsList.push(new inquirer.Separator('-- container permissions --'));
   permissionsList.push(availablePermissions.container.decrypt);
   permissionsList.push(availablePermissions.container.download);
+  permissionsList.push(availablePermissions.container.viewType);
   permissionsList.push(availablePermissions.container.modifyType);
   permissionsList.push(availablePermissions.container.upload);
 
@@ -788,6 +883,7 @@ const homeMenu = () => {
       commands.showFileById,
       commands.showFilesInOfs,
       commands.processEvents,
+      commands.switchSourcePrivider,
       commands.logout,
       commands.exit
     ],
@@ -806,6 +902,9 @@ const homeMenu = () => {
       break;
       case commands.processEvents:
         processEvents();
+      break;
+      case commands.switchSourcePrivider:
+        switchDataProvider();
       break;
       case commands.logout:
         logOut();
