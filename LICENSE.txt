@@ -563,20 +563,3 @@ certification verifying that the Software is being used in accordance with this
 Agreement, including, if applicable, the number of Installed Instances.  You shall give us 
 reasonable access to your books, records and systems solely to verify that the Software 
 is being used pursuant to this Agreement.
-
-k.	Counterparts, Signatures. This Agreement may be signed in counterparts such that each 
-duplicate, together with a complete set of original signatures, shall constitute one and 
-the same agreement, but this Agreement shall only be enforceable once it is signed by 
-all of the parties, either in counterparts or otherwise.  Facsimile and electronic signature 
-shall be as valid as originals.
-
-Agreed and accepted as of this ______ day of ________________, 20____, or as otherwise 
-provided in Section 2 herein.
-
-Absio Corporation						Licensee
-
-
-By:	_______________________				By:_______________________
-
-Its:	_______________________				Its:_______________________
-Page 13		
