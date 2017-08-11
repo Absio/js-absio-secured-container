@@ -354,6 +354,7 @@ Information about the [available functions](#available-functions) of the Absio S
   * [create(content[, options])](#createcontent-options---containerid)
   * [deleteContainer(id)](#deletecontainerid)
   * [get(id[, options])](#getid-options---container)
+  * [getMetadata(id)](#getmetadataid---container)
   * [getLatestEvents([options])](#getlatesteventsoptions-----container-event--)
   * [update(id[, options])](#updateid-options)
   * [setCurrentProvider(storageProvider)](#setcurrentproviderstorageprovider)
@@ -604,6 +605,20 @@ Parameter   | Type  | Description
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
 `includeContent` | boolean | `true` | Set to `false` to prevent downloading and decrypting content.  This is helpful when the content is very large.
+
+---
+
+### `getMetadata(id)` -> [container](#container-object)
+
+Gets the Absio Secured Container metadata (no content or header).
+
+Returns a Promise that resolves to a container.
+
+Throws an Error if the container or connection is unavailable.
+
+Parameter   | Type  | Description
+:------|:------|:-----------
+`id` | String | The ID of the container to get.
 
 ---
 
