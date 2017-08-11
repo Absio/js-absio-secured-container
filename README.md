@@ -354,6 +354,7 @@ Information about the [available functions](#available-functions) of the Absio S
   * [create(content[, options])](#createcontent-options---containerid)
   * [deleteContainer(id)](#deletecontainerid)
   * [get(id[, options])](#getid-options---container)
+  * [getMetadata(id)](#getmetadataid---container)
   * [getLatestEvents([options])](#getlatesteventsoptions-----container-event--)
   * [update(id[, options])](#updateid-options)
   * [setCurrentProvider(storageProvider)](#setcurrentproviderstorageprovider)
@@ -375,7 +376,7 @@ Containers are the method by which data is passed between users securely.
 
 Crucial to utilizing a container is understanding ‘access’.  This specifies details such as with whom the container should be shared, what access and permissions are enabled, if the access should be revoked at a particular time, etc.
 
-Containers have headers and content.  Headers are intended to include metadata information.  They could contain client-enforceable controls such as “is this recipient allowed to print” or identifiers that help tie the content back to something your system understands. The only restriction is that the header must be JSON serializable.
+Containers have headers and content.  Headers are intended to include metadata information.  They could contain client-enforceable controls such as “is this recipient allowed to print�? or identifiers that help tie the content back to something your system understands. The only restriction is that the header must be JSON serializable.
 
 The content is assumed to be a file body. However, it too could be more JSON, or XML, or any other type of data. The content is intended to be just that - the data.
 
@@ -604,6 +605,20 @@ Parameter   | Type  | Description
 Option | Type  | Default | Description
 :------|:------|:--------|:-----------
 `includeContent` | boolean | `true` | Set to `false` to prevent downloading and decrypting content.  This is helpful when the content is very large.
+
+---
+
+### `getMetadata(id)` -> [container](#container-object)
+
+Gets the Absio Secured Container metadata (no content or header).
+
+Returns a Promise that resolves to a container.
+
+Throws an Error if the container or connection is unavailable.
+
+Parameter   | Type  | Description
+:------|:------|:-----------
+`id` | String | The ID of the container to get.
 
 ---
 
