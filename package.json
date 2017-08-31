@@ -1,6 +1,13 @@
 {
   "name": "absio-secured-container",
-  "version": "0.1.6",
+  "version": "1.1.1",
+  "description": "Protect your application's sensitive data with Absio Secured Containers.  Serverless Encryption and automated Key Management",
+  "bugs": {
+    "url" : "https://github.com/Absio/js-absio-secured-container/issues"
+  },
+  "license": {
+    "license" : "SEE LICENSE IN LICENSE.txt"
+  },
   "browser": {
     "./dist/node/index.es2015.js": "./dist/browser/index.es2015.js",
     "./dist/node/index.umd.js": "./dist/browser/index.umd.js"
@@ -21,7 +28,8 @@
   "dependencies": {
     "fetch-ponyfill": "4.0.0",
     "leveldown": "^1.6.0",
-    "linvodb3": "^3.25.0"
+    "linvodb3-with-serialization-options": "Absio/linvodb3-with-serialization-options",
+    "rimraf": "^2.6.1"
   },
   "devDependencies": {
     "absio-base-sdk": "1.0.0-RC51",
@@ -58,12 +66,12 @@
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1"
   },
-  "homepage": "https://github.com/Absio/absio-secured-container",
+  "homepage": "https://github.com/Absio/js-absio-secured-container",
   "files": [
     "dist/"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Absio/absio-secured-container"
+    "url": "https://github.com/Absio/js-absio-secured-container"
   }
 }
