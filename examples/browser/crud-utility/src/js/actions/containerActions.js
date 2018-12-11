@@ -36,7 +36,7 @@ export const createNewContainer = (userId, headerContent, containerType, permiss
                 options.access[userId].expiration = moment(expirationDate).toDate();
             }
             const data = await getArrayBufferFromBlob(fileBlob.file);
-            await create(data,options);
+            await create(data, options);
         }
         catch(error) {
             console.log(error.message);

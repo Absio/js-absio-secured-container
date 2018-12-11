@@ -8,11 +8,14 @@ program
     .option('-H, --hostname <hostname>', 'Hostname or IP of the server, complete with the protocol, such as: https://sandbox.absio.com.')
     .option('-k, --key <key>', 'API key associated with the server.')
     .option('-u, --userid  <userid>', 'User ID.')
-    .option('-p, --password <password>', 'The password used to encrypt the key file.')
-    .option('-s, --passphrase <passphrase>', 'Passphrase used for getting Key File from the server and for authenticating when the password is lost.')
+    .option('-p, --password <password>', 'Current user password.')
+    .option('-s, --passphrase <passphrase>', 'Current user passphrase.')
+    .option('-w, --newpassword <newpassword>', 'New user password.')
+    .option('-a, --newpassphrase <newpassphrase>', 'New user passphrase.')
+    .option('-r, --newreminder  <newreminder>', 'New reminder.')
     .parse(process.argv);
 
-if (!program.hostname || !program.key || !program.userid) {
+if (!program.hostname || !program.key || !program.userid || !program.newpassword || !program.newpassphrase) {
     util.exit('Missing required parameters.');
 }
 
@@ -23,11 +26,14 @@ if (!program.password && !program.passphrase) {
 util.logInfo('===========');
 util.logInfo('Your Hostname: ' + program.hostname);
 util.logInfo('Your API key: ' + program.key);
-util.logInfo('Your Password: ' + program.password);
-util.logInfo('Your User ID: ' + program.userid);
-util.logInfo('Your Passphrase: ' + program.passphrase);
+util.logInfo('Your Current Password: ' + program.password);
+util.logInfo('Your Current Passphrase: ' + program.passphrase);
+util.logInfo('Your New Password: ' + program.newpassword);
+util.logInfo('Your New Passphrase: ' + program.newpassphrase);
+util.logInfo('Your New Reminder: ' + program.newreminder);
 
 securedContainer.initialize(program.hostname, program.key, {rootDirectory: './Absio', partitionDataByUser: true})
     .then(() => securedContainer.logIn(program.userid, program.password, program.passphrase))
-    .then(() => util.logSuccess('Logged in successfully'))
+    .then(() => securedContainer.changeCredentials(program.newpassword, program.newpassphrase, program.newreminder))
+    .then(userId => util.logSuccess('Credentials changed successfully'))
     .catch(util.logError);
