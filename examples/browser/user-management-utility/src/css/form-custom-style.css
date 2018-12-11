@@ -1,5 +1,5 @@
 
-.small-form-style{
+.small-form-style {
     width: 300px;
     border: 1px solid #DDD;
     border-radius: 5px;
@@ -7,15 +7,15 @@
     margin-top: 50px;
 }
 
-.tab-form-style{
+.tab-form-style {
     border: 0;
     border-radius: 0;
     margin-left: 100px;
     margin-right: 100px;
 }
 
-.tab-container{
-    margin-top: 50px;
+.tab-container {
+    margin-top: 20px;
 }
 
 .react-tabs [role=tablist] {
@@ -28,4 +28,9 @@
     border-right: 1px solid #aaaaaa;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+.FormField .Checkbox {
+    padding: 0 5px;
+    text-align: left;
 }

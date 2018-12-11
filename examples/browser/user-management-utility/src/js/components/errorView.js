@@ -1,10 +1,10 @@
 import React from 'react';
-import { Alert } from 'elemental'
+import {Alert} from 'elemental';
 
 
-class ErrorComponentView  extends React.Component {
+class ErrorComponentView extends React.Component {
 
-    render () {
+    render() {
 
         if (!this.props.error) {
             return null;
@@ -16,7 +16,8 @@ class ErrorComponentView  extends React.Component {
                     <strong>Error:</strong> {this.props.error.message}
                 </div>
             </Alert>
-        )};
+        )
+    };
 }
 
 ErrorComponentView.PropTypes = {

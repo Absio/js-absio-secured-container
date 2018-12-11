@@ -71,6 +71,7 @@ class ContainerModal extends React.Component {
                     <td>{containerId}</td>
                     <td>{permissions.access.view.toString() }</td>
                     <td>{permissions.access.modify.toString()}</td>
+                    <td>{permissions.access.rxAccessEvents.toString()}</td>
                     <td>{permissions.container.decrypt.toString()}</td>
                     <td>{permissions.container.download.toString()}</td>
                     <td>{permissions.container.modifyType.toString()}</td>
@@ -114,12 +115,14 @@ class ContainerModal extends React.Component {
                                 <col width="10%" />
                                 <col width="10%" />
                                 <col width="10%" />
+                                <col width="10%" />
                             </colgroup>
                             <thead>
                             <tr>
                                 <th>User ID</th>
                                 <th>View Access</th>
                                 <th>Modify Access</th>
+                                <th>Receive Access Events</th>
                                 <th>Decrypt</th>
                                 <th>Download</th>
                                 <th>Modify Type</th>

@@ -1,12 +1,10 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import  DeleteUserComponentView from './../components/deleteUserViewComponent';
-import { deleteUserAccount } from './../actions';
+import DeleteUserComponentView from './../components/deleteUserViewComponent';
+import {deleteUserAccount} from './../actions';
 
 const mapStateToProps = (state) => {
-    return {
-
-    }
+    return {};
 };
 
 const mapDispatchToProps = (dispatch) => {

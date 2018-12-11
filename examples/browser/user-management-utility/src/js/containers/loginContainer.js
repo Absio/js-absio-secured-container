@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import LoginComponentView from './../components/loginComponentView';
-import { login, showRegisterView, showResetPassword } from './../actions';
+import {login, showRegisterView, showResetPassword} from './../actions';
 
 const mapStateToProps = (state) => {
     return {
@@ -14,8 +14,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
     return {
-        login: (id, password, passphrase) => dispatch(login(id,password,passphrase)),
-        register:() =>  dispatch(showRegisterView()),
+        login: (id, password, passphrase, cacheLocal) => dispatch(login(id, password, passphrase, cacheLocal)),
+        register: () => dispatch(showRegisterView()),
         resetPassword: () => dispatch(showResetPassword())
     }
 };

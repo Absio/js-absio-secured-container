@@ -1,23 +1,18 @@
 import React from 'react';
-import { Row, Col } from 'react-flexbox-grid';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import ChangePasswordContainer from '../containers/changePasswordContainer';
-import ChangeBackupCredentialsContainer from '../containers/changeBackupCredentialsContainer';
+import {Row, Col} from 'react-flexbox-grid';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import ChangeCredentialsContainer from '../containers/changeCredentialsContainer';
+import SynchronizeAccountContainer from '../containers/synchronizeAccountContainer';
 import DeleteUserContainer from '../containers/deleteUserContainer';
-import{ Alert, Button } from 'elemental'
+import {Alert, Button} from 'elemental';
 
-class TabViewComponent  extends React.Component {
+class TabViewComponent extends React.Component {
 
-    constructor(){
-        super();
-        this.handleSelect = this.handleSelect.bind(this);
-    }
-
-    handleSelect(index, last){
+    handleSelect(index, last) {
         this.props.tabChanged();
     }
 
-    render () {
+    render() {
         return (
             <div>
                 <Row>
@@ -26,24 +21,25 @@ class TabViewComponent  extends React.Component {
                             <div className="tab-container">
                                 <Row center="xs">
                                     <Alert type="success"> UserId: {this.props.userId} </Alert>
-                                    <Button className="logout-button" type="hollow-warning" onClick={(e) => this.props.logOut()}>Logout</Button>
+                                    <Button className="logout-button" type="hollow-warning"
+                                            onClick={(e) => this.props.logOut()}>Logout</Button>
                                 </Row>
                                 <Tabs
-                                    onSelect={this.handleSelect}
+                                    onSelect={() => this.handleSelect()}
                                     selectedIndex={0}
                                 >
                                     <TabList>
-                                        <Tab>Change Password</Tab>
-                                        <Tab>Change Backup Credentials</Tab>
+                                        <Tab>Change Credentials</Tab>
+                                        <Tab>Synchronize account</Tab>
                                         <Tab>Delete user</Tab>
                                     </TabList>
 
                                     <TabPanel>
-                                      <ChangePasswordContainer/>
+                                        <ChangeCredentialsContainer/>
                                     </TabPanel>
 
                                     <TabPanel>
-                                        <ChangeBackupCredentialsContainer/>
+                                        <SynchronizeAccountContainer/>
                                     </TabPanel>
 
                                     <TabPanel>
@@ -55,7 +51,8 @@ class TabViewComponent  extends React.Component {
                     </Col>
                 </Row>
             </div>
-        );}
+        );
+    }
 }
 
 TabViewComponent.PropTypes = {

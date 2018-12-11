@@ -1,12 +1,12 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, Route } from 'react-router';
-import { createBrowserHistory } from 'history';
-import { applyMiddleware, createStore } from 'redux';
-import { syncHistoryWithStore } from 'react-router-redux'
-import { initialize } from 'absio-secured-container';
+import {Provider} from 'react-redux';
+import {Router, Route} from 'react-router';
+import {createBrowserHistory} from 'history';
+import {applyMiddleware, createStore} from 'redux';
+import {syncHistoryWithStore} from 'react-router-redux'
+import {initialize} from 'absio-secured-container';
 import thunk from 'redux-thunk';
 import viewerReducer from './js/reducers';
 import App from './js/App';
@@ -20,9 +20,9 @@ const history = syncHistoryWithStore(createBrowserHistory(), store);
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router history = {history}>
+        <Router history={history}>
             <Route path="/" component={App}/>
         </Router>
     </Provider>,
-  document.getElementById('root')
+    document.getElementById('root')
 );
