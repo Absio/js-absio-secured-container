@@ -1,11 +1,11 @@
 {
   "name": "absio-secured-container",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Protect your application's sensitive data with Absio Secured Containers.  Serverless Encryption and automated Key Management",
   "bugs": {
     "url" : "https://github.com/Absio/js-absio-secured-container/issues"
   },
-  "license" : "SEE LICENSE IN LICENSE.txt",
+  "license" : "SEE LICENSE IN LICENSE.md",
   "browser": {
     "./dist/node/index.es2015.js": "./dist/browser/index.min.js"
   },
