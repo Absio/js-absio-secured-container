@@ -18,9 +18,9 @@ const open        = require('open');
 securedContainer.initialize('https://sandbox.absio.com', '860ba350-7551-4fd3-b988-f31cd067094f')
     .catch((error) => console.log(chalk.red(error)));
 
-
 const commands = {
   login: 'Login',
+  loginOffline: 'Login (offline)',
   exit: 'Exit',
   loadFileIntoSystem: 'Load File into System',
   showFileById: 'Show File by ID',
@@ -138,7 +138,7 @@ const processEvents = () => {
   const status = new Spinner('Processing events ...');
   status.start();
 
-  securedContainer.getLatestEvents({startingEventId: 0})
+  securedContainer.getEvents({startingEventId: 0})
   .then((events) => {
       availableIds = filterEventsId(events);
       status.stop();
@@ -175,7 +175,56 @@ const logOut = () => {
    });
 }
 
-const loginWithCredentials = () => {
+const loginOfflineWithCredentials = () => {
+  const loginQuestions = [
+    {
+      type: 'input',
+      name: 'userId',
+      message: 'Enter userId',
+      validate: (value) => {
+        if (value.length) {
+          return true;
+        } else {
+          return 'Please enter userId';
+        }
+      }
+    },
+    {
+      type: 'password',
+      name: 'password',
+      message: 'Enter password',
+      validate: (value) => {
+        if (value.length) {
+          return true;
+        } else {
+          return 'Please enter password';
+        }
+      }
+    }
+  ];
+
+  inquirer.prompt(loginQuestions)
+  .then((answers) => {
+      const status = new Spinner('Authentication ...');
+      status.start();
+      
+      securedContainer.logIn(answers.userId, answers.password, undefined, { cacheLocal: true })
+      .then(() => {
+        loggedInUserId = answers.userId;
+        securedContainer.setCurrentProvider(securedContainer.providers.ofsContainerProvider);
+        status.stop();
+        homeMenu();
+      })
+      .catch((error) => {
+        status.stop();
+        logError(error.stack);
+        logError(error.message);
+        topMenu();
+    });
+  });
+}
+
+const loginOnlineWithCredentials = () => {
     const loginQuestions = [
       {
         type: 'input',
@@ -749,7 +798,8 @@ const getHeaderAndContentType = (doNotAskAboutAccess) => {
 const availablePermissions  = {
   access:{
     view: 'view',
-    modify: 'modify'
+    modify: 'modify',
+    rxAccessEvents: 'rxAccessEvents'
   },
   container:{
     decrypt: 'decrypt',
@@ -777,6 +827,7 @@ const getAccessModifiers = () => {
   permissionsList.push(new inquirer.Separator('-- access permissions --'));
   permissionsList.push(availablePermissions.access.view);
   permissionsList.push(availablePermissions.access.modify);
+  permissionsList.push(availablePermissions.access.rxAccessEvents);
   permissionsList.push(new inquirer.Separator('-- container permissions --'));
   permissionsList.push(availablePermissions.container.decrypt);
   permissionsList.push(availablePermissions.container.download);
@@ -924,13 +975,17 @@ const topMenu = () =>{
     message: 'Please choose an option',
     choices: [
       commands.login,
+      commands.loginOffline,
       commands.exit
     ]
   })
   .then((answers) => {
     switch(answers.optionValue){
       case commands.login:
-        loginWithCredentials();
+        loginOnlineWithCredentials();
+        break;
+      case commands.loginOffline:
+        loginOfflineWithCredentials();
         break;
       case commands.exit:
         exitFromApp();

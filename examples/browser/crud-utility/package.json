@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "absio-secured-container":"1.1.0",
+    "absio-secured-container": "1.2.0",
     "downloadjs": "^1.4.7",
     "elemental": "0.6.1",
     "halogen": "^0.2.0",
@@ -23,8 +23,9 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5",
-    "babel-polyfill": "^6.23.0"
+    "babel-polyfill": "^6.23.0",
+    "json-loader": "^0.5.7",
+    "react-scripts": "0.9.5"
   },
   "scripts": {
     "start": "react-scripts start",

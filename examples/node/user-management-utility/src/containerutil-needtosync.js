@@ -20,6 +20,6 @@ util.logInfo('Your API key: ' + program.key);
 util.logInfo('Your User ID: ' + program.userid);
 
 securedContainer.initialize(program.hostname, program.key, {rootDirectory: './Absio', partitionDataByUser: true})
-    .then(() => securedContainer.getBackupReminder(program.userid))
-    .then(reminder => util.logSuccess(`Passphrase reminder: ${reminder}`))
+    .then(() => securedContainer.needToSyncAccount(program.userid))
+    .then(needToSync => util.logSuccess(needToSync ? 'Not synced' : 'Already synced'))
     .catch(util.logError);

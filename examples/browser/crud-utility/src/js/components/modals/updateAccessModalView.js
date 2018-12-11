@@ -22,6 +22,7 @@ const defaultPermissions = {
     access:{
         view: false,
         modify: false,
+        rxAccessEvents: false
     },
     container:{
         decrypt: false,
@@ -157,6 +158,7 @@ class UpdateAccessModal extends React.Component {
                     <div className="inline-controls">
                         <Checkbox label="view" checked={this.state.permissionObj.access.view} onChange = {e => this.handlePermissionCheckBoxChange(e,'view')} />
                         <Checkbox label="modify" checked={this.state.permissionObj.access.modify} onChange = {e => this.handlePermissionCheckBoxChange(e, 'modify')} />
+                        <Checkbox label="rxAccessEvents" checked={this.state.permissionObj.access.rxAccessEvents} onChange = {e => this.handlePermissionCheckBoxChange(e, 'rxAccessEvents')} />
                     </div>
                 </FormField>
 

@@ -1,14 +1,15 @@
-
-import { childViewNames, actionTypes } from '../constants';
+import {childViewNames, actionTypes} from '../constants';
 
 const initialState = {
-    userId : null,
+    userId: null,
     childName: childViewNames.login,
     error: null,
     loading: false,
-    reminder:'',
-    passwordChanged : false,
-    backupChanged: false
+    reminder: '',
+    passwordChanged: false,
+    backupChanged: false,
+    needToSync: null,
+    synced: false
 };
 
 const mainView = (state, action) => {
@@ -25,23 +26,24 @@ const mainView = (state, action) => {
         case actionTypes.SHOW_REGISTER_VIEW:
             return Object.assign({}, state, {childName: childViewNames.register, error: null});
         case actionTypes.USER_REGISTERED_SUCCESSFULLY:
-            return Object.assign({}, state, { userId : action.userId });
+            return Object.assign({}, state, {userId: action.userId});
         case actionTypes.SHOW_RESET_PASSWORD_VIEW:
             return Object.assign({}, state, {childName: childViewNames.resetPassword, error: null});
         case actionTypes.LOGIN_COMPLETED:
-            return Object.assign({}, state, {childName:childViewNames.tabView, reminder : action.reminder, userId: action.id });
+            return Object.assign({}, state, {childName: childViewNames.tabView, reminder: action.reminder, userId: action.id});
         case actionTypes.RESET_STATE_FOR_CREDENTIALS:
-            return Object.assign({}, state, { passwordChanged : false, backupChanged : false, error: null });
-        case actionTypes.BACKUP_CREDENTIALS_CHANGED_SUCCESSFULLY:
-            return Object.assign({}, state, { backupChanged : true });
-        case actionTypes.PASSWORD_CHANGED_SUCCESSFULLY:
-            return Object.assign({}, state, { passwordChanged : true });
-        case actionTypes.PASSWORD_RESTORED_SUCCESSFULLY:
-            return Object.assign({}, state, { userId : action.userId });
+            return Object.assign({}, state, {passwordChanged: false, backupChanged: false, error: null, needToSync: null, synced: false});
+        case actionTypes.CREDENTIALS_CHANGED_SUCCESSFULLY:
+            return Object.assign({}, state, {backupChanged: true});
         case actionTypes.SHOW_LOGIN_VIEW:
-            return Object.assign({}, state, { childName: childViewNames.login });
+            return Object.assign({}, state, {childName: childViewNames.login});
         case actionTypes.DELETE_USER_DATA:
             return initialState;
+        case actionTypes.NEED_TO_SYNC_ACCOUNT:
+            return Object.assign({}, state, {needToSync: action.needToSync, synced: false});
+        case actionTypes.SYNCHRONIZED_ACCOUNT_SUCCESSFULLY:
+            return Object.assign({}, state, {synced: true, needToSync: null});
+
         default:
             return state;
     }

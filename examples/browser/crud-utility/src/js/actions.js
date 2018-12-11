@@ -5,14 +5,14 @@ import {
     logIn,
     logOut,
     getBackupReminder,
-    getLatestEvents } from 'absio-secured-container';
+    getEvents } from 'absio-secured-container';
 
 export const searchById = (value) => {
     return async (dispatch, getState) => {
         dispatch({type: actionTypes.START_LOADING});
         try {
             if(searchById.length){
-                const events = await getLatestEvents({startingEventId: 0});
+                const events = await getEvents({startingEventId: 0});
                 const containers = filterEventsId(events);
                 let filteredContainers = containers.filter((elem, index, array) => {
                     return elem.containerId.includes(value);
@@ -51,7 +51,7 @@ export const processEvents = () => {
     return async (dispatch, getState) => {
         dispatch({type: actionTypes.START_LOADING});
         try {
-            const events = await getLatestEvents({startingEventId: 0});
+            const events = await getEvents({startingEventId: 0});
             let filteredEvents = filterEventsId(events);
             dispatch({type: actionTypes.CONTAINERS_ARRAY_UPDATED, containers: filteredEvents })
         }
