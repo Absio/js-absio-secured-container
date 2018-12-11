@@ -1,40 +1,29 @@
 #!/usr/bin/env node
 require('babel-polyfill');
-const util = require ('./output');
-let program = require('commander');
-let chalk = require('chalk');
-let securedContainer = require('absio-secured-container');
+const util = require('./util');
+const program = require('commander');
+const securedContainer = require('absio-secured-container');
 
 program
     .option('-H, --hostname <hostname>', 'Hostname or IP of the server, complete with the protocol, such as: https://sandbox.absio.com')
-    .option('-k, --key <key>', 'API key associated with the server')
+    .option('-k, --key <key>', 'API key associated with the server.')
     .option('-p, --password <password>', 'The password used to encrypt the key file.')
-    .option('-r, --reminder  <reminder>', 'The reminder should only be used as a hint to remember the backupPassphrase. This string is stored in plain text and should not contain sensitive information.')
-    .option('-b, --backupphrase  <backuphrase>', 'The backupphrase can be used later to reset the password or to allow logging in from another system.')
+    .option('-r, --reminder  <reminder>', 'The reminder should only be used as a hint to remember the passphrase. This string is stored in plain text and should not contain sensitive information.')
+    .option('-s, --passphrase <passphrase>', 'Passphrase used for getting Key File from the server and for authenticating when the password is lost.')
     .parse(process.argv);
 
-if (!program.hostname || !program.key || !program.password || !program.reminder || !program.backupphrase) {
-    console.log(chalk.bold.green('Missing required parameters.'));
-    program.outputHelp();
-    process.exit(1);
+if (!program.hostname || !program.key || !program.password || !program.reminder || !program.passphrase) {
+    util.exit('Missing required parameters.');
 }
 
-try{
-    util.logResult("===========");
-    util.logResult("Your Hostname: " + program.hostname);
-    util.logResult("Your API key: " + program.key);
-    util.logResult("Your Password: " + program.password);
-    util.logResult("Your Reminder: " + program.reminder);
-    util.logResult("Your Backup Passphrase: " + program.backupphrase);
+util.logInfo('===========');
+util.logInfo('Your Hostname: ' + program.hostname);
+util.logInfo('Your API key: ' + program.key);
+util.logInfo('Your Password: ' + program.password);
+util.logInfo('Your Reminder: ' + program.reminder);
+util.logInfo('Your Passphrase: ' + program.passphrase);
 
-    securedContainer.initialize(program.hostname, program.key, {rootDirectory: './Absio'})
-        .then(function() {
-            securedContainer.register(program.password, program.reminder, program.backupphrase)
-                .then(function(userId) {
-                    util.logResult("Create user with ID: " + userId);
-                });
-        });
-}
-catch(e){
-    util.logErrorMessage(e);
-}
+securedContainer.initialize(program.hostname, program.key, {rootDirectory: './Absio', partitionDataByUser: true})
+    .then(() => securedContainer.register(program.password, program.reminder, program.passphrase))
+    .then(userId => util.logSuccess(`Created user with ID: ${userId}`))
+    .catch(util.logError);
