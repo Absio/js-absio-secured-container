@@ -15,7 +15,7 @@ const _           = require('lodash');
 const moment      = require('moment');
 const open        = require('open');
 
-securedContainer.initialize('https://sandbox.absio.com', '860ba350-7551-4fd3-b988-f31cd067094f')
+securedContainer.initialize('https://sandbox.absio.com', 'c8b2b4f8-ba18-4baa-9204-8a2d3f3e0b42')
     .catch((error) => console.log(chalk.red(error)));
 
 const commands = {
