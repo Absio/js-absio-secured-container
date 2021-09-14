@@ -15,25 +15,27 @@ program
     .option('-r, --newreminder  <newreminder>', 'New reminder.')
     .parse(process.argv);
 
-if (!program.hostname || !program.key || !program.userid || !program.newpassword || !program.newpassphrase) {
+const options = program.opts();
+
+if (!options.hostname || !options.key || !options.userid || !options.newpassword || !options.newpassphrase) {
     util.exit('Missing required parameters.');
 }
 
-if (!program.password && !program.passphrase) {
+if (!options.password && !options.passphrase) {
     util.exit('Please supply either password or passphrase.');
 }
 
 util.logInfo('===========');
-util.logInfo('Your Hostname: ' + program.hostname);
-util.logInfo('Your API key: ' + program.key);
-util.logInfo('Your Current Password: ' + program.password);
-util.logInfo('Your Current Passphrase: ' + program.passphrase);
-util.logInfo('Your New Password: ' + program.newpassword);
-util.logInfo('Your New Passphrase: ' + program.newpassphrase);
-util.logInfo('Your New Reminder: ' + program.newreminder);
+util.logInfo('Your Hostname: ' + options.hostname);
+util.logInfo('Your API key: ' + options.key);
+util.logInfo('Your Current Password: ' + options.password);
+util.logInfo('Your Current Passphrase: ' + options.passphrase);
+util.logInfo('Your New Password: ' + options.newpassword);
+util.logInfo('Your New Passphrase: ' + options.newpassphrase);
+util.logInfo('Your New Reminder: ' + options.newreminder);
 
-securedContainer.initialize(program.hostname, program.key, {rootDirectory: './Absio', partitionDataByUser: true})
-    .then(() => securedContainer.logIn(program.userid, program.password, program.passphrase))
-    .then(() => securedContainer.changeCredentials(program.newpassword, program.newpassphrase, program.newreminder))
+securedContainer.initialize(options.hostname, options.key, {rootDirectory: './Absio', partitionDataByUser: true})
+    .then(() => securedContainer.logIn(options.userid, options.password, options.passphrase))
+    .then(() => securedContainer.changeCredentials(options.newpassword, options.newpassphrase, options.newreminder))
     .then(userId => util.logSuccess('Credentials changed successfully'))
     .catch(util.logError);

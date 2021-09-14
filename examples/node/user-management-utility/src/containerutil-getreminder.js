@@ -10,16 +10,18 @@ program
     .option('-u, --userid  <userid>', 'User ID.')
     .parse(process.argv);
 
-if (!program.hostname || !program.key || !program.userid) {
+const options = program.opts();
+
+if (!options.hostname || !options.key || !options.userid) {
     util.exit('Missing required parameters.');
 }
 
 util.logInfo('===========');
-util.logInfo('Your Hostname: ' + program.hostname);
-util.logInfo('Your API key: ' + program.key);
-util.logInfo('Your User ID: ' + program.userid);
+util.logInfo('Your Hostname: ' + options.hostname);
+util.logInfo('Your API key: ' + options.key);
+util.logInfo('Your User ID: ' + options.userid);
 
-securedContainer.initialize(program.hostname, program.key, {rootDirectory: './Absio', partitionDataByUser: true})
-    .then(() => securedContainer.getBackupReminder(program.userid))
+securedContainer.initialize(options.hostname, options.key, {rootDirectory: './Absio', partitionDataByUser: true})
+    .then(() => securedContainer.getBackupReminder(options.userid))
     .then(reminder => util.logSuccess(`Passphrase reminder: ${reminder}`))
     .catch(util.logError);

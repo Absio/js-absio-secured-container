@@ -12,18 +12,20 @@ program
     .option('-s, --passphrase <passphrase>', 'Passphrase used for getting Key File from the server and for authenticating when the password is lost.')
     .parse(process.argv);
 
-if (!program.hostname || !program.key || !program.password || !program.reminder || !program.passphrase) {
+const options = program.opts();
+
+if (!options.hostname || !options.key || !options.password || !options.reminder || !options.passphrase) {
     util.exit('Missing required parameters.');
 }
 
 util.logInfo('===========');
-util.logInfo('Your Hostname: ' + program.hostname);
-util.logInfo('Your API key: ' + program.key);
-util.logInfo('Your Password: ' + program.password);
-util.logInfo('Your Reminder: ' + program.reminder);
-util.logInfo('Your Passphrase: ' + program.passphrase);
+util.logInfo('Your Hostname: ' + options.hostname);
+util.logInfo('Your API key: ' + options.key);
+util.logInfo('Your Password: ' + options.password);
+util.logInfo('Your Reminder: ' + options.reminder);
+util.logInfo('Your Passphrase: ' + options.passphrase);
 
-securedContainer.initialize(program.hostname, program.key, {rootDirectory: './Absio', partitionDataByUser: true})
-    .then(() => securedContainer.register(program.password, program.reminder, program.passphrase))
+securedContainer.initialize(options.hostname, options.key, {rootDirectory: './Absio', partitionDataByUser: true})
+    .then(() => securedContainer.register(options.password, options.reminder, options.passphrase))
     .then(userId => util.logSuccess(`Created user with ID: ${userId}`))
     .catch(util.logError);
