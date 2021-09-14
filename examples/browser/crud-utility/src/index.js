@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -12,7 +11,7 @@ import viewerReducer from './js/reducers';
 import App from './js/App';
 import './css/index.css';
 
-initialize('https://sandbox.absio.com', '860ba350-7551-4fd3-b988-f31cd067094f')
+initialize('https://sandbox.absio.com', 'c8b2b4f8-ba18-4baa-9204-8a2d3f3e0b42')
     .catch((error) => console.log(error));
 
 const store = createStore(viewerReducer, applyMiddleware(thunk));

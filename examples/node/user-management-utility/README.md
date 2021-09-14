@@ -8,11 +8,12 @@ _npm install_
 1. Start - run the command below.  Note: this will run the a single command.  This does not start a session.<br>
 _node src/containerutil.js 'command from list' 'parameters'_
 1. List of available commands
-    * register - register new user and returns user id after successful operation
-    * resetpassword - reset a user's password
+    * register - registers a new user and returns user ID after successful operation
     * login - perform a login to test your password and passphrase
-    * deleteuser - delete a User
-    * getreminder - returns the publicly accessible reminder for the User's backup passphrase
-    * changebackupphrase - changes the backup credentials for the current User
+    * deleteuser - deletes the user
+    * getreminder - returns the publicly accessible reminder for the user's passphrase
+    * changecredentials - changes credentials for the user
+    * needtosync - checks if the Key File needs to be synced
+    * syncaccount - pulls the Key File from the server and loads it into memory and optionally into the cache
 1. Help - to learn about the attributes for a particular command, add -h after the command as the only parameter
 _node src/containerutil.js 'register' -h_
