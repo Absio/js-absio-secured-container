@@ -79,7 +79,6 @@ The following table outlines the access attributes for a specific user for a spe
 |'keyBlobModifiedAt' | Date | null | This is date/time when the access was last updated.
 |'keyBlobModifiedBy' | String/GUID | null | The user's id who last updated this access.
 |'permissions' | Object | null | The specific permissions for this user/container. See the [JSON example](#json-example-of-access-for-a-user) for the format of the permissions object and below for the permissions definitions.
-|'userId' | String/GUID | null | The user id this access is for.
 
 ### JSON Example of Access for a User
 
@@ -152,7 +151,7 @@ The Container consists of the [Access Information Object](#access-information-ob
 | :-------- | :--- | :------------ | :---------- |
 |'access' | Object | null | Details about with whom the container is shared and what permissions they have. This is in the form of dictionary of User ID to the [Access Information Object](#access-information-object). <br><br><b>NOTE:</b> If a user did not create the container and/or does not have `access.view` permission, they will only see the access for their user ID.
 |'content' | Buffer | null | The decrypted content (payload) portion of the Absio Secured Container.  <br><br><b>NOTE:</b> If this is null, the content was not included/decrypted or the authenticated user does not have the `container.download` and/or `container.decrypt` permission.
-|'created' | Date | null | ISO formatted date/time when a container was created.  <br><br><b>NOTE:</b> This field will be null if the authenticated user does not have the `container.download` permission. 
+|'createdAt' | Date | null | ISO formatted date/time when a container was created.  <br><br><b>NOTE:</b> This field will be null if the authenticated user does not have the `container.download` permission. 
 |'header' | string/JSON | null | The decrypted header (metadata) portion of the Absio Secured Container.  The header is JSON.  <br><br><b>NOTE:</b> If this is null, the content was not included/decrypted or the authenticated User does not have the `container.download` and/or `container.decrypt` permission.
 |'id' | String | null | The ID of the container.
 |'modifiedAt' | Date | null | ISO formatted date/time when a container was last modified.  If the container has never been modified, this will be null.  <br><br><b>NOTE:</b> This field will be null if the authenticated user does not have the `container.download` permission. 
@@ -187,7 +186,7 @@ The Container consists of the [Access Information Object](#access-information-ob
         ...
     },
     content: Buffer(),
-    created: Date(),
+    createdAt: Date(),
     header: {},
     id: 'container ID',
     modifiedAt: Date(),
