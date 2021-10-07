@@ -1,6 +1,6 @@
 {
   "name": "absio-secured-container",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Protect your application's sensitive data with Absio Secured Containers.  Serverless Encryption and automated Key Management",
   "bugs": {
     "url": "https://github.com/Absio/js-absio-secured-container/issues"
